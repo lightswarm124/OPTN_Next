@@ -2,8 +2,11 @@
 
 import { useState, useEffect } from "react";
 import InputNumber from 'rc-input-number';
+import {QRCodeSVG} from 'qrcode.react';
 
 import { generateXPub, generateAddress } from '@/utils/wallet'
+
+import { NumPad } from '@/components/NumPad'
 
 const MNEMONIC = "talk story visual hidden behind wasp evil abandon bus brand circle sketch"
 
@@ -65,6 +68,8 @@ const Home = () => {
       <div className='flex-end mx-3 mb-5 gap-4'>XPub {XPub}</div>
       <div className='flex-end mx-3 mb-5 gap-4'>BIP44 Path m/44'/1'/0'/0/{index}</div>
       <div className='flex-end mx-3 mb-5 gap-4'>Address {address}</div>
+      <QRCodeSVG value={address} />
+      <NumPad />
 
     </section>
   )
