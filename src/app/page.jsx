@@ -9,6 +9,9 @@ import { Button } from "@material-tailwind/react";
 import { NumPad } from '@/components/NumPad'
 import { generateXPub, generateAddress } from '@/utils/wallet'
 
+import Loader from '../components/Loader';
+import { useGetCryptosQuery } from "../services/cryptoApi"
+
 const MNEMONIC = "talk story visual hidden behind wasp evil abandon bus brand circle sketch"
 
 const Home = () => {
@@ -21,6 +24,9 @@ const Home = () => {
   const [BIP21, setBIP21] = useState(false)
   const [payAmount, setPayAmount] = useState('')
   const [BIP21URL, setBIP21URL] = useState('')
+
+  const { data, isFetching } = useGetCryptosQuery(10);
+  const globalStats = data?.data?.stats;
 
   useEffect(() => {
     console.log("Xpub", XPub)
@@ -51,6 +57,8 @@ const Home = () => {
     console.log(numpadAmount)
     setPayAmount(numpadAmount)
   }
+
+  if (isFetching) return <Loader />;
 
   return (
     <section className='w-full flex-center flex-col'>
@@ -99,6 +107,7 @@ const Home = () => {
       </div>
 
       <div className='flex-end mx-3 mb-5 gap-4'>XPub {XPub}</div>
+      <div className='flex-end mx-3 mb-5 gap-4'>{globalStats.total}</div>
       <div className='flex-end mx-3 mb-5 gap-4'>BIP44 Path m/44'/1'/{account}'/{change}/{index}</div>
       <div className='flex-end mx-3 mb-5 gap-4'>Address {address}</div>
       <QRCodeSVG className="mb-5" value={BIP21URL} />
